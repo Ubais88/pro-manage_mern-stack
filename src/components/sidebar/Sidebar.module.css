@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebarContainer {
+  width: 17vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: #474444;
+  background-color: #ffffff;
+  border-right: 1px solid #edf5fe;
+  padding: 0.5rem 0;
+}
+
+.routes {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logoText {
+  font-family: Poppins;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #000000;
+}
+
+/* .sandboxLogo{
+    height: 3rem;
+} */
+
+.menuItems {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.menuItem {
+  font-family: Poppins;
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  padding: 0.4rem ;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+
+.selectedMenuItem {
+  background-color: #4391ed1a;
+  color: #000000;
+}
+
+.logoutContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoutText {
+  font-family: Poppins;
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #CF3636;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
