@@ -1,0 +1,54 @@
+.logoutModalContainer {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  z-index: 231;
+  box-sizing: border-box;
+  color: #9f9f9f;
+}
+
+.logoutModalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 1rem 2rem;
+  border-radius: 0.6rem;
+  gap: 1rem;
+}
+
+.message {
+  font-family: Noto Sans;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.logoutButton,
+.cancelButton {
+  font-family: Poppins;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.6rem;
+  width: 100%;
+  padding: 0.4rem;
+  cursor: pointer;
+}
+
+.logoutButton {
+  background-color: #17a2b8;
+  color: #ffff;
+}
+
+.cancelButton {
+  color: #cf3636;
+  background-color: #ffff;
+  border: 1px solid #cf3636;
+}

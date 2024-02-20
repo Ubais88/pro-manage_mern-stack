@@ -38,6 +38,7 @@ const Settings = () => {
     <div className={styles.mainContainer}>
       <div className={styles.settingsHeader}>Settings</div>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
+      
         <div className={styles.fieldContainer}>
           <input
             type="text"

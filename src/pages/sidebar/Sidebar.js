@@ -6,10 +6,12 @@ import { GoDatabase } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineLogout } from "react-icons/hi";
 import CodeSandBox from "../../assets/codesandbox.png";
+import LogoutModal from "../logoutModal/LogoutModal";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
+  const [modalOpen , setModalOpen] = useState(false)
 
   const handleMenuItemClick = (e) => {
     const menuItem = e.target.id;
@@ -17,7 +19,7 @@ const Sidebar = () => {
   };
 
   const logoutClickHandler = () => {
-    navigate("/");
+    setModalOpen(true);
   };
 
   useEffect(() => {
@@ -74,9 +76,9 @@ const Sidebar = () => {
           </h2>
         </div>
       </div>
-      {/* {
-      modalOpen && <Createquiz/>
-    } */}
+      {
+      modalOpen && <LogoutModal setModalOpen={setModalOpen}/>
+    }
     </div>
   );
 };
