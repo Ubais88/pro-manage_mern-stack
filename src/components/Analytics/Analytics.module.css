@@ -1,0 +1,49 @@
+.analyticsContainer {
+  padding: 2rem;
+}
+
+.analyticsHeader {
+  font-family: Open Sans;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.analyticsLists {
+  padding: 2rem;
+  display: flex;
+  gap: 3rem;
+
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: disc;
+}
+
+li::marker{
+    color: #90C4CC;
+    font-size: 1.5rem;
+    
+}
+
+.taskItem {
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+  width: 20vw;
+}
+
+.taskName {
+  font-family: Open Sans;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.taskCount {
+  font-family: Open Sans;
+  font-size: 1.3rem;
+  font-weight: 600;
+}

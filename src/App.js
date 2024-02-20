@@ -4,6 +4,7 @@ import './App.css'
 import Auth from "./pages/auth/Auth.js";
 import Sidebar from "./components/sidebar/Sidebar";
 import Dashboard from "./components/dashboard/Dashboard.js";
+import Analytics from "./components/Analytics/Analytics.js";
 
 
 
@@ -20,6 +21,7 @@ const App = () => {
               <Sidebar />
               <Routes>
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/analytics" element={<Analytics />} />
               </Routes>
             </div>
           }
