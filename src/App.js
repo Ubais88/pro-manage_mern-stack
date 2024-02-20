@@ -1,10 +1,11 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import './App.css'
-import Auth from "./pages/auth/Auth.js";
+import Auth from "./pages/auth/Auth";
 import Sidebar from "./components/sidebar/Sidebar";
-import Dashboard from "./components/dashboard/Dashboard.js";
-import Analytics from "./components/Analytics/Analytics.js";
+import Dashboard from "./components/dashboard/Dashboard";
+import Analytics from "./components/Analytics/Analytics";
+import Settings from "./components/Settings/Settings.js";
 
 
 
@@ -22,6 +23,7 @@ const App = () => {
               <Routes>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/analytics" element={<Analytics />} />
+                <Route path="/settings" element={<Settings />} />
               </Routes>
             </div>
           }

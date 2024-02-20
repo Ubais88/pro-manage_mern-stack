@@ -1,0 +1,93 @@
+
+.mainContainer {
+  padding: 2rem;
+}
+
+.settingsHeader {
+  font-family: Open Sans;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.formContainer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.fieldContainer {
+  position: relative;
+}
+
+.inputField {
+  font-family: Open Sans;
+  font-size: 1rem;
+  font-weight: 400;
+  border-radius: 0.5rem;
+  border: 1.38px solid #d0d0d0;
+  outline: none;
+  width: 32vw;
+  padding: 0.7rem 2rem 0.7rem 2rem;
+}
+
+.inputIcon,
+.eyeIcon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.inputIcon {
+  left: 0.5rem;
+}
+
+.eyeIcon {
+  right: 0.4rem;
+  cursor: pointer;
+}
+
+.updateButton,
+.register {
+  font-family: Open Sans;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.6rem 5.5rem;
+  width: 32vw;
+  border-radius: 4rem;
+  cursor: pointer;
+}
+
+.updateButton {
+  margin-top: 1rem;
+  background-color: #17a2b8;
+  border: none;
+  color: #ffffff;
+}
+
+.updateButton:hover {
+  background-color: #13bcd6;
+}
+
+.register {
+  color: #17a2b8;
+  border: 1.38px solid #17a2b8;
+  margin-top: 1rem;
+}
+
+.reminder {
+  font-family: Open Sans;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.errorContainer {
+  display: flex;
+  width: 31vw;
+}
+.error {
+  color: red;
+  text-align: left;
+  height: 0vh;
+  margin-top: -0.7rem;
+}
