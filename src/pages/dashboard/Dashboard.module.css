@@ -101,12 +101,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .itemIcon {
   display: flex;
   align-items: center;
   gap: 0.2rem;
+}
+
+.collapseIcon {
+  cursor: pointer;
+}
+.addAndcollapse {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
 }
 
 .itemLabel {
@@ -120,6 +131,11 @@
   color: "#00000";
   cursor: pointer;
 }
+.menuModal {
+  position: absolute;
+  top: 70%;
+  left: 57%;
+ }
 
 .itemName {
   font-family: Poppins;
@@ -219,7 +235,7 @@
 }
 
 .cardContainer::-webkit-scrollbar {
-  width: 5px;
+  width: 0px;
 }
 
 .cardContainer::-webkit-scrollbar-thumb {
@@ -230,3 +246,4 @@
 .cardContainer::-webkit-scrollbar-track {
   background-color: #d6eaf4;
 }
+

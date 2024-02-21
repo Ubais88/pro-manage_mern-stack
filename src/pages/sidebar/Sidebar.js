@@ -11,7 +11,7 @@ import LogoutModal from "../logoutModal/LogoutModal";
 const Sidebar = () => {
   const navigate = useNavigate();
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
-  const [modalOpen , setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleMenuItemClick = (e) => {
     const menuItem = e.target.id;
@@ -76,9 +76,9 @@ const Sidebar = () => {
           </h2>
         </div>
       </div>
-      {
-      modalOpen && <LogoutModal setModalOpen={setModalOpen}/>
-    }
+      {modalOpen && (
+        <LogoutModal title={"Logout"} setModalOpen={setModalOpen} />
+      )}
     </div>
   );
 };
