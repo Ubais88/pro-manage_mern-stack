@@ -6,10 +6,12 @@ import { BsThreeDots } from "react-icons/bs";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import MenuModal from "../../components/menuModal/MenuModal";
+import CreateChecklist from "../addChecklistModal/CreateChecklist";
 
 const Dashboard = () => {
   const [selectedOption, setSelectedOption] = useState("This Week");
   const [menuModalState, setMenuModalState] = useState({});
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
@@ -111,7 +113,11 @@ const Dashboard = () => {
             <div className={styles.cardHeader}>
               <p className={styles.cardTitle}>To Do</p>
               <div className={styles.addAndcollapse}>
-                <FaPlus color="#767575" size="18" />
+                <FaPlus
+                  color="#767575"
+                  size="18"
+                  onClick={() => setEditModalOpen(true)}
+                />
                 <VscCollapseAll
                   color="#767575"
                   size="20"
@@ -295,6 +301,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {
+        editModalOpen && ( <CreateChecklist setEditModalOpen={setEditModalOpen} /> )
+      }
     </div>
   );
 };

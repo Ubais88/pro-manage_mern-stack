@@ -1,0 +1,166 @@
+.modalContainer {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  z-index: 231;
+  box-sizing: border-box;
+}
+
+.addModal {
+  font-family: Poppins;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 61vh;
+  width: 50vw;
+  background-color: #ffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  justify-content: space-between;
+}
+
+.topContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inputLabel,
+.priorityLabel {
+  font-family: Inter;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #20102b;
+}
+
+
+
+sup {
+  color: #ff0000;
+}
+.inputField {
+  border: 1px solid #4d40551a;
+  outline: none;
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 4px;
+}
+
+.priorityContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.priorityButton {
+  border: 1px solid #e2e2e2;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #767575;
+  margin: 0;
+  background-color: transparent;
+}
+
+.selectedPriority{
+    background-color: #EEECEC;
+}
+
+.addnewChecklistBtn {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #767575;
+  font-family: Inter;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.checklist {
+  border: 1px solid #e2e2e2;
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.6rem;
+}
+.checklistInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0.3rem;
+  font-family: Inter;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.addCheckListContainer {
+  padding: 0.3rem 1rem;
+  max-height: 24vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dateContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectDate {
+  font-size: 1rem;
+  font-weight: 500;
+  border: 2px solid #e2e2e2;
+  border-radius: 0.7rem;
+  padding: 0.4rem;
+  color: #707070;
+  cursor: pointer;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.cancelButton,
+.saveButton {
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.7rem;
+  padding: 0.4rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+.saveButton {
+  color: #ffff;
+  background-color: #17a2b8;
+  padding: 0.4rem 3rem;
+}
+
+.cancelButton {
+  color: #cf3636;
+  border: 1px solid #cf3636;
+  padding: 0.4rem 2rem;
+}
+
+.addCheckListContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.addCheckListContainer::-webkit-scrollbar-thumb {
+  background-color: #9cb7c5;
+  border-radius: 5px;
+}
