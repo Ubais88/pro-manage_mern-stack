@@ -9,9 +9,7 @@ import toast from "react-hot-toast";
 const CreateChecklist = ({ setEditModalOpen }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [checklistItems, setChecklistItems] = useState([
-    { text: "", checked: false },
-  ]);
+  const [checklistItems, setChecklistItems] = useState([]);
   const [selectedPriority, setSelectedPriority] = useState(null);
   const [title, setTitle] = useState("");
 
@@ -122,6 +120,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
                   />
                   <input
                     type="text"
+                    placeholder="Add a task"
                     className={styles.checklistInput}
                     value={item.text}
                     onChange={(e) =>

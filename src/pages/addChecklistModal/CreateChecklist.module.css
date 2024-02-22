@@ -39,6 +39,11 @@
   color: #20102b;
 }
 
+.inputContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
 
 
 sup {

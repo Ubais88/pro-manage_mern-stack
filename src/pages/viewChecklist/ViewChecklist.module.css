@@ -1,0 +1,134 @@
+.viewContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  padding: 3rem;
+  padding-bottom: 2rem;
+  font-family: Poppins;
+  align-items: center;
+  overflow: hidden;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.logoTitle {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.cardBody {
+  padding: 1rem 2rem 0rem 4rem;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.itemLabel {
+  font-size: 0.5rem;
+  font-weight: 500;
+  color: #707070;
+}
+
+.itemName {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.checklistCount {
+  font-family: Inter;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.checklistContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  /* max-width: 80%; */
+  overflow: hidden;
+}
+
+.checklistScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  overflow: auto;
+}
+
+.checklistContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid #e2e2e2;
+}
+
+.checkBox {
+  border: 2px solid #e2e2e2;
+}
+
+.checklistText {
+  font-family: Inter;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000000;
+}
+
+.dateAndBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.dueDate {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.dateButton {
+  color: #ffffff;
+  background-color: #cf3636;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.checklistScroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.checklistScroll::-webkit-scrollbar-thumb {
+  background-color: #9cb7c5;
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 300px) and (max-width: 480px) {
+  .logoContainer {
+    margin-left: 1rem;
+  }
+  .viewContainer {
+    padding: 2rem 0 2rem 0;
+    gap: 1rem;
+  }
+
+  .cardBody {
+    padding: 1rem 0 1rem 1rem;
+    width: 100%;
+  }
+}

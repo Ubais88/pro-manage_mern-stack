@@ -6,6 +6,7 @@ import Sidebar from "./pages/sidebar/Sidebar.js";
 import Dashboard from "./pages/dashboard/Dashboard.js";
 import Analytics from "./components/Analytics/Analytics";
 import Settings from "./components/Settings/Settings.js";
+import ViewChecklist from "./pages/viewChecklist/ViewChecklist.js";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             </div>
           }
         />
+        <Route path="/view/checklist/:id" element={<ViewChecklist/>} />
       </Routes>
     </div>
   );
