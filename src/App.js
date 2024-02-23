@@ -5,7 +5,7 @@ import Auth from "./pages/auth/Auth";
 import Sidebar from "./pages/sidebar/Sidebar.js";
 import Dashboard from "./pages/dashboard/Dashboard.js";
 import Analytics from "./components/Analytics/Analytics";
-import Settings from "./components/Settings/Settings.js";
+import Settings from "./components/settings/Settings.js";
 import ViewChecklist from "./pages/viewChecklist/ViewChecklist.js";
 
 const App = () => {
