@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import styles from "./Register.module.css";
 import { MdOutlineEmail, MdLockOutline } from "react-icons/md";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import toast from "react-hot-toast";
 import { CiUser } from "react-icons/ci";
+import { useAuth } from "../../store/auth";
+import axios from "axios";
 
-const RegisterForm = ({setLoginFormActive}) => {
+const RegisterForm = ({ setLoginFormActive }) => {
+  const { BASE_URL } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,8 +34,8 @@ const RegisterForm = ({setLoginFormActive}) => {
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
     const isPasswordValid = formData.password.length >= 5;
 
-    if(!formData.name){
-      newErrors.name = "Name is required"
+    if (!formData.name) {
+      newErrors.name = "Name is required";
     }
     if (!isEmailValid) {
       newErrors.email = "Invalid Email";
@@ -40,10 +44,10 @@ const RegisterForm = ({setLoginFormActive}) => {
     if (!isPasswordValid) {
       newErrors.password = "Weak password";
     }
-    if(formData.password !== formData.confirmPassword){
-      console.log(formData.password)
-      console.log(formData.confirmPassword)
-      newErrors.confirmPassword = "Password not match"
+    if (formData.password !== formData.confirmPassword) {
+      console.log(formData.password);
+      console.log(formData.confirmPassword);
+      newErrors.confirmPassword = "Password not match";
     }
 
     if (Object.keys(newErrors).length) {
@@ -51,19 +55,49 @@ const RegisterForm = ({setLoginFormActive}) => {
     } else return true;
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(isFormValid()){
-        console.log(formData);
+    if (isFormValid()) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/auth/signup`,
+          JSON.stringify(formData),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("signup response:", response);
+
+        if (response.status === 200) {
+          // Successful login
+          setFormData({
+            name: "",
+            email: "",
+            password: "",
+            cPassword: "",
+          });
+          toast.success("Signup successful");
+          setLoginFormActive(true);
+        } else {
+          // Failed login
+          const res_data = response.data; // Access the response data directly
+          toast.error(res_data.message);
+          //console.log("Invalid credential");
+        }
+      } catch (error) {
+        // Log any errors
+        console.error("Signup error:", error);
+        toast.error(error.response.data.message);
+      }
     }
   };
 
-
   return (
     <div className={styles.mainContainer}>
-      <form className={styles.formContainer} onSubmit={handleSubmit} >
-
+      <form className={styles.formContainer} onSubmit={handleSubmit}>
         {/* name */}
         <div className={styles.fieldContainer}>
           <input
@@ -73,11 +107,7 @@ const RegisterForm = ({setLoginFormActive}) => {
             className={styles.inputField}
             onChange={handleInputChange}
           />
-          <CiUser
-            fontSize={20}
-            fill="#828282"
-            className={styles.inputIcon}
-          />
+          <CiUser fontSize={20} fill="#828282" className={styles.inputIcon} />
         </div>
         <div className={styles.errorContainer}>
           <span className={styles.error}>{errors.name}</span>
@@ -173,8 +203,12 @@ const RegisterForm = ({setLoginFormActive}) => {
         <button className={styles.loginButton}>Register</button>
         <p className={styles.reminder}>Have an account?</p>
       </form>
-      <button className={styles.register} onClick={() => setLoginFormActive((prev) => !prev)}>Log in</button>
-
+      <button
+        className={styles.register}
+        onClick={() => setLoginFormActive((prev) => !prev)}
+      >
+        Log in
+      </button>
     </div>
   );
 };
