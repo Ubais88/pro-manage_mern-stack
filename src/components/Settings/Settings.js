@@ -3,9 +3,12 @@ import styles from "./Settings.module.css";
 import { MdLockOutline } from "react-icons/md";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { CiUser } from "react-icons/ci";
+import axios from "axios";
 import toast from "react-hot-toast";
+import { useAuth } from "../../store/auth";
 
 const Settings = () => {
+  const { authorizationToken, BASE_URL } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,20 +28,49 @@ const Settings = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name && !formData.oldPassword && !formData.newPassword) {
-        toast.error("Enter Data to Update");
+      toast.error("Enter Data to Update");
     } else if (!formData.oldPassword && formData.newPassword) {
       toast.error("Please enter your old password.");
     } else if (formData.oldPassword && !formData.newPassword) {
       toast.error("Please enter your new password.");
+    } else {
+      console.log(formData);
+      try {
+        const response = await axios.put(
+          `${BASE_URL}/auth/update`,
+          JSON.stringify(formData),
+          {
+            headers: {
+              Authorization: authorizationToken,
+            },
+          }
+        );
+        //console.log("Login response:", response);
+        if (response.status === 200) {
+          // Successful login
+          setFormData({
+            name: "",
+            oldPassword: "",
+            newPassword: "",
+          });
+          toast.success("Update successful");
+        } else {
+          // Failed login
+          const res_data = response.data; // Access the response data directly
+          toast.error(res_data.message);
+        }
+      } catch (error) {
+        // Log any errors
+        console.error("Update error:", error);
+        toast.error(error.response.data.message);
+      }
     }
-    console.log(formData);
   };
 
   return (
     <div className={styles.mainContainer}>
       <div className={styles.settingsHeader}>Settings</div>
       <form className={styles.formContainer} onSubmit={handleSubmit}>
-      
         <div className={styles.fieldContainer}>
           <input
             type="text"
