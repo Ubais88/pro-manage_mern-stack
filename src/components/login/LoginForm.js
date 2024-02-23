@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { MdOutlineEmail, MdLockOutline } from "react-icons/md";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useAuth } from "../../store/auth";
+import axios from "axios";
 
 const LoginForm = ({ setLoginFormActive }) => {
+  const { storeTokenInLS, BASE_URL } = useAuth();
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +48,34 @@ const LoginForm = ({ setLoginFormActive }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isFormValid()) {
-      console.log(loginFormData);
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/auth/login`,
+          JSON.stringify(loginFormData),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          // Successful login
+
+          storeTokenInLS(response.data.token);
+          setLoginFormData({ email: "", password: "" });
+          toast.success("Login successful");
+          navigate("/dashboard");
+        } else {
+          // Failed login
+          const res_data = response.data; // Access the response data directly
+          toast.error(res_data.message);
+        }
+      } catch (error) {
+        // Log any errors
+        console.error("Login error:", error);
+        toast.error(error.response.data.message);
+      }
     }
   };
 
