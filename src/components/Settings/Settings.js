@@ -45,11 +45,11 @@ const Settings = () => {
             },
           }
         );
-        //console.log("Login response:", response);
+        console.log("Login response:", response);
         if (response.status === 200) {
           // Successful login
           setFormData({
-            name: "",
+            name: response.data.updatedUserDetails.name,
             oldPassword: "",
             newPassword: "",
           });
@@ -76,6 +76,7 @@ const Settings = () => {
             type="text"
             name="name"
             placeholder="Name"
+            value={formData.name}
             className={styles.inputField}
             onChange={handleInputChange}
           />
