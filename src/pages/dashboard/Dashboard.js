@@ -399,8 +399,8 @@ const Dashboard = () => {
                 </div>
 
                 <div className={styles.allCards}>
-                  {cardData.InProgress.length > 0 &&
-                    cardData.InProgress.map((card) => (
+                  {cardData.Inprogress.length > 0 &&
+                    cardData.Inprogress.map((card) => (
                       <div className={styles.cardBody} key={card._id}>
                         <div className={styles.item}>
                           <div className={styles.itemIcon}>
