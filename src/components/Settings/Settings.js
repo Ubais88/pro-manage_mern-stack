@@ -8,11 +8,11 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../store/auth";
 
 const Settings = () => {
-  const { authorizationToken, BASE_URL } = useAuth();
+  const { authorizationToken, BASE_URL , name } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    name: name,
     oldPassword: "",
     newPassword: "",
   });

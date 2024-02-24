@@ -3,10 +3,12 @@ import styles from "./Analytics.module.css";
 import { useAuth } from "../../store/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Analytics = () => {
-  const { authorizationToken, BASE_URL } = useAuth();
+  const { authorizationToken, LogoutUser , BASE_URL } = useAuth();
   const [cardAnalysisData, setCardAnalysisData] = useState({});
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchAnalysisData = async () => {
@@ -27,6 +29,7 @@ const Analytics = () => {
       } catch (error) {
         if (error.response && error.response.status === 401) {
           LogoutUser(); // Log out the user
+          navigate("/")
         }
         toast.error(error.response?.data?.message || "Something went wrong");
       }
@@ -34,7 +37,6 @@ const Analytics = () => {
 
     fetchAnalysisData();
   }, [authorizationToken, BASE_URL]);
-
 
   const renderTaskItem = (name, count) => (
     <li className={styles.task}>
@@ -57,7 +59,10 @@ const Analytics = () => {
         </ul>
         <ul className={styles.taskList}>
           {renderTaskItem("Low Priority", cardAnalysisData.lowpriority)}
-          {renderTaskItem("Moderate Priority", cardAnalysisData.moderatepriority)}
+          {renderTaskItem(
+            "Moderate Priority",
+            cardAnalysisData.moderatepriority
+          )}
           {renderTaskItem("High Priority", cardAnalysisData.highpriority)}
           {renderTaskItem("Due Date Tasks", cardAnalysisData.dueDatePassed)}
         </ul>

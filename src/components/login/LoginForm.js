@@ -8,7 +8,7 @@ import { useAuth } from "../../store/auth";
 import axios from "axios";
 
 const LoginForm = ({ setLoginFormActive }) => {
-  const { storeTokenInLS, BASE_URL } = useAuth();
+  const { storeTokenInLS, BASE_URL , setName } = useAuth();
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
@@ -63,6 +63,7 @@ const LoginForm = ({ setLoginFormActive }) => {
           // Successful login
 
           storeTokenInLS(response.data.token);
+          setName(response.data.name);
           setLoginFormData({ email: "", password: "" });
           toast.success("Login successful");
           navigate("/dashboard");
