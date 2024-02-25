@@ -23,11 +23,11 @@ const CreateChecklist = ({ setEditModalOpen }) => {
 
   const handleAddChecklistItem = () => {
     setCheckList([...checkList, { text: "", isChecked: false }]);
-    setShowCalendar(false)
+    setShowCalendar(false);
   };
 
   const handleDeleteChecklistItem = (index) => {
-    setShowCalendar(false)
+    setShowCalendar(false);
     setCheckList((prevItems) => {
       const updatedItems = [...prevItems];
       updatedItems.splice(index, 1);
@@ -36,7 +36,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
   };
 
   const handleChecklistItemChange = (value, index) => {
-    setShowCalendar(false)
+    setShowCalendar(false);
     setCheckList((prevItems) => {
       const updatedItems = [...prevItems];
       updatedItems[index].text = value;
@@ -45,17 +45,17 @@ const CreateChecklist = ({ setEditModalOpen }) => {
   };
 
   const handleCheckboxChange = (index) => {
-    setShowCalendar(false)
+    setShowCalendar(false);
     setCheckList((prevItems) => {
       const updatedItems = [...prevItems];
-      updatedItems[index].checked = !updatedItems[index].checked;
+      updatedItems[index].isChecked = !updatedItems[index].isChecked;
       return updatedItems;
     });
   };
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
-    setShowCalendar(false)
+    setShowCalendar(false);
   };
 
   const handleSave = async () => {

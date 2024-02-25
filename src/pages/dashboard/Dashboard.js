@@ -22,7 +22,7 @@ const Dashboard = () => {
 
   const handleChange = (e) => {
     setSortingTime(e.target.value);
-    fetchStats(e.target.value)
+    fetchStats(e.target.value);
   };
 
   const toggleMenuModal = (index) => {
@@ -37,7 +37,7 @@ const Dashboard = () => {
 
   const fetchStats = async (sortingTime) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios.post(
         `${BASE_URL}/card/getallcards`,
         { sortingTime },
@@ -129,14 +129,14 @@ const Dashboard = () => {
           <div className={styles.section}>
             <p className={styles.sectionTitle}>Board</p>
             <select
-          value={sortingTime}  // Set value attribute to sortingTime state
-          onChange={handleChange}
-          className={styles.sectionDropDown}
-        >
-          <option value="Today">Today</option>
-          <option value="This Week">This Week</option>
-          <option value="This Month">This Month</option>
-        </select>
+              value={sortingTime} // Set value attribute to sortingTime state
+              onChange={handleChange}
+              className={styles.sectionDropDown}
+            >
+              <option value="Today">Today</option>
+              <option value="This Week">This Week</option>
+              <option value="This Month">This Month</option>
+            </select>
           </div>
 
           {/* Cards */}
@@ -188,7 +188,12 @@ const Dashboard = () => {
                         <div className={styles.checklistContainer}>
                           <div className={styles.checklistHeader}>
                             <p className={styles.checklistCount}>
-                              Checklist (0/3)
+                              Checklist (
+                              {
+                                card.checkList.filter((item) => item.isChecked)
+                                  .length
+                              }
+                              /{card.checkList.length})
                             </p>
                             <MdOutlineKeyboardArrowUp
                               className={styles.arrowIcon}
@@ -323,7 +328,12 @@ const Dashboard = () => {
                         <div className={styles.checklistContainer}>
                           <div className={styles.checklistHeader}>
                             <p className={styles.checklistCount}>
-                              Checklist (0/3)
+                              Checklist (
+                              {
+                                card.checkList.filter((item) => item.isChecked)
+                                  .length
+                              }
+                              /{card.checkList.length})
                             </p>
                             <MdOutlineKeyboardArrowUp
                               className={styles.arrowIcon}
@@ -441,7 +451,12 @@ const Dashboard = () => {
                         <div className={styles.checklistContainer}>
                           <div className={styles.checklistHeader}>
                             <p className={styles.checklistCount}>
-                              Checklist (0/3)
+                              Checklist (
+                              {
+                                card.checkList.filter((item) => item.isChecked)
+                                  .length
+                              }
+                              /{card.checkList.length})
                             </p>
                             <MdOutlineKeyboardArrowUp
                               className={styles.arrowIcon}
@@ -559,7 +574,12 @@ const Dashboard = () => {
                         <div className={styles.checklistContainer}>
                           <div className={styles.checklistHeader}>
                             <p className={styles.checklistCount}>
-                              Checklist (0/3)
+                              Checklist (
+                              {
+                                card.checkList.filter((item) => item.isChecked)
+                                  .length
+                              }
+                              /{card.checkList.length})
                             </p>
                             <MdOutlineKeyboardArrowUp
                               className={styles.arrowIcon}
