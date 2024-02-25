@@ -18,13 +18,14 @@ const Dashboard = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [cardData, setCardData] = useState();
   const [loading, setLoading] = useState(true);
-  const [moveCardId, setMoveCardId] = useState("");
+  const [cardId, setCardId] = useState("");
 
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
   const toggleMenuModal = (index) => {
+    setCardId(index);
     setMenuModalState({});
 
     setMenuModalState((prevState) => ({
@@ -171,7 +172,7 @@ const Dashboard = () => {
                           />
                           {menuModalState[card._id] && (
                             <div className={styles.menuModal}>
-                              <MenuModal />
+                              <MenuModal cardId={cardId} />
                             </div>
                           )}
                         </div>
@@ -306,7 +307,7 @@ const Dashboard = () => {
                           />
                           {menuModalState[card._id] && (
                             <div className={styles.menuModal}>
-                              <MenuModal />
+                              <MenuModal cardId={cardId} />
                             </div>
                           )}
                         </div>
@@ -424,7 +425,7 @@ const Dashboard = () => {
                           />
                           {menuModalState[card._id] && (
                             <div className={styles.menuModal}>
-                              <MenuModal />
+                              <MenuModal cardId={cardId} />
                             </div>
                           )}
                         </div>
@@ -542,7 +543,7 @@ const Dashboard = () => {
                           />
                           {menuModalState[card._id] && (
                             <div className={styles.menuModal}>
-                              <MenuModal />
+                              <MenuModal cardId={cardId} />
                             </div>
                           )}
                         </div>

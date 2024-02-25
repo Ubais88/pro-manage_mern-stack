@@ -6,7 +6,7 @@ import { GoDatabase } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineLogout } from "react-icons/hi";
 import CodeSandBox from "../../assets/codesandbox.png";
-import LogoutModal from "../logoutModal/LogoutModal";
+import LogoutDeleteControl from "../logoutDeleteControl/LogoutDeleteControl";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ const Sidebar = () => {
         </div>
       </div>
       {modalOpen && (
-        <LogoutModal title={"Logout"} setModalOpen={setModalOpen} />
+        <LogoutDeleteControl title={"Logout"} setModalOpen={setModalOpen} />
       )}
     </div>
   );

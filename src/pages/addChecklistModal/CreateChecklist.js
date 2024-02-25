@@ -5,25 +5,30 @@ import "react-calendar/dist/Calendar.css";
 import { MdDelete } from "react-icons/md";
 import styles from "./CreateChecklist.module.css";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useAuth } from "../../store/auth";
 
 const CreateChecklist = ({ setEditModalOpen }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const { authorizationToken, BASE_URL, LogoutUser } = useAuth();
+  const [dueDate, setDueDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [checklistItems, setChecklistItems] = useState([]);
-  const [selectedPriority, setSelectedPriority] = useState(null);
+  const [checkList, setCheckList] = useState([]);
+  const [priority, setPriority] = useState(null);
   const [title, setTitle] = useState("");
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setDueDate(date);
     setShowCalendar(false);
   };
 
   const handleAddChecklistItem = () => {
-    setChecklistItems([...checklistItems, { text: "", checked: false }]);
+    setCheckList([...checkList, { text: "", isChecked: false }]);
+    setShowCalendar(false)
   };
 
   const handleDeleteChecklistItem = (index) => {
-    setChecklistItems((prevItems) => {
+    setShowCalendar(false)
+    setCheckList((prevItems) => {
       const updatedItems = [...prevItems];
       updatedItems.splice(index, 1);
       return updatedItems;
@@ -31,7 +36,8 @@ const CreateChecklist = ({ setEditModalOpen }) => {
   };
 
   const handleChecklistItemChange = (value, index) => {
-    setChecklistItems((prevItems) => {
+    setShowCalendar(false)
+    setCheckList((prevItems) => {
       const updatedItems = [...prevItems];
       updatedItems[index].text = value;
       return updatedItems;
@@ -39,7 +45,8 @@ const CreateChecklist = ({ setEditModalOpen }) => {
   };
 
   const handleCheckboxChange = (index) => {
-    setChecklistItems((prevItems) => {
+    setShowCalendar(false)
+    setCheckList((prevItems) => {
       const updatedItems = [...prevItems];
       updatedItems[index].checked = !updatedItems[index].checked;
       return updatedItems;
@@ -48,19 +55,49 @@ const CreateChecklist = ({ setEditModalOpen }) => {
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
+    setShowCalendar(false)
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (
-      !selectedPriority ||
+      !priority ||
       !title.trim() ||
-      checklistItems.some((item) => item.text.trim() === "")
+      !checkList.length ||
+      checkList.some((item) => item.text.trim() === "")
     ) {
       toast.error("Please fill all compulsory fields.");
     } else {
-      toast.success("fine");
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/card/create`,
+          { title, priority, checkList, dueDate },
+          {
+            headers: {
+              Authorization: authorizationToken,
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          // Successful getstats
+          setEditModalOpen(false);
+        } else {
+          // Failed getstats
+          const message = response.data.message;
+          toast.error(message);
+          console.log("Invalid credential");
+        }
+      } catch (error) {
+        // Log any errors
+        console.error("stats  error:", error);
+        // if the error is due to unauthorized access (status code 401)
+        if (error.response && error.response.status === 401) {
+          LogoutUser(); // Log out the user
+        }
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
     }
-    console.log("checklistItems: ", checklistItems);
+    // console.log("checkList: ", checkList);
   };
 
   const priorityLevels = [
@@ -94,9 +131,9 @@ const CreateChecklist = ({ setEditModalOpen }) => {
               <button
                 key={level.label}
                 className={`${styles.priorityButton} ${
-                  selectedPriority === level.label && styles.selectedPriority
+                  priority === level.label && styles.selectedPriority
                 }`}
-                onClick={() => setSelectedPriority(level.label)}
+                onClick={() => setPriority(level.label)}
               >
                 <IoEllipseSharp size={10} color={level.color} />
                 {level.label}
@@ -106,12 +143,12 @@ const CreateChecklist = ({ setEditModalOpen }) => {
 
           <div className={styles.checklistContainer}>
             <p className={styles.checklistLabel}>
-              Checklist ({checklistItems.filter((item) => item.checked).length}/
-              {checklistItems.length})<sup>*</sup>
+              Checklist ({checkList.filter((item) => item.checked).length}/
+              {checkList.length})<sup>*</sup>
             </p>
 
             <div className={styles.addCheckListContainer}>
-              {checklistItems.map((item, index) => (
+              {checkList.map((item, index) => (
                 <div key={index} className={styles.checklist}>
                   <input
                     type="checkbox"
@@ -150,7 +187,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
           {showCalendar ? (
             <Calendar
               onChange={handleDateChange}
-              value={selectedDate}
+              value={dueDate}
               className={styles.calendar}
             />
           ) : (
@@ -158,7 +195,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
               onClick={() => setShowCalendar(true)}
               className={styles.selectDate}
             >
-              {selectedDate ? selectedDate.toDateString() : "Select Due Date"}
+              {dueDate ? dueDate.toDateString() : "Select Due Date"}
             </p>
           )}
           <div className={styles.buttonContainer}>

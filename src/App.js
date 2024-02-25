@@ -26,7 +26,7 @@ const App = () => {
             </div>
           }
         />
-        <Route path="/view/checklist/:id" element={<ViewChecklist/>} />
+        <Route path="/view/checklist/:cardId" element={<ViewChecklist/>} />
       </Routes>
     </div>
   );
