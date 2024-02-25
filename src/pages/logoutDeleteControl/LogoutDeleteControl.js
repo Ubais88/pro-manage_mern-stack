@@ -2,47 +2,48 @@ import React from "react";
 import styles from "./LogoutDeleteControl.module.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const LogoutDeleteControl = ({ setModalOpen, title, cardId }) => {
+const LogoutDeleteControl = ({ setModalOpen, actionType, cardId }) => {
+  const { authorizationToken, LogoutUser, isLoggedIn, BASE_URL } = useAuth();
   const navigate = useNavigate();
-  const { LogoutUser, isLoggedIn } = useAuth();
-
   if (!isLoggedIn) {
     navigate("/");
   }
 
-  const logoutClickHandler = () => {
+  const handleAction = async () => {
+    if (actionType === "Logout") {
+      logoutHandler();
+    } else if (actionType === "Delete") {
+      deleteHandler();
+    }
+  };
+
+  const logoutHandler = () => {
     LogoutUser();
     navigate("/");
   };
 
   const deleteHandler = async () => {
     try {
-      const response = await axios.delete(
-        `${BASE_URL}/quiz/delete/${cardId}`,
-        {
-          headers: {
-            Authorization: authorizationToken,
-          },
-        }
-      );
-
-      //console.log("delete response: ", response);
+      const response = await axios.delete(`${BASE_URL}/card/delete/${cardId}`, {
+        headers: {
+          Authorization: authorizationToken,
+        },
+      });
 
       if (response.status === 200) {
-        // Successful deleted data
-        toast.success("Quiz deleted successfully");
+        toast.success("Card deleted successfully");
+        setModalOpen(false);
       } else {
-        // Failed analysis
         const message = response.data.message;
         toast.error(message);
       }
     } catch (error) {
-      // Log any errors
-      console.error("stats  error:", error);
-      // if the error is due to unauthorized access (status code 401)
+      console.error("Delete error:", error);
       if (error.response && error.response.status === 401) {
-        LogoutUser(); // Log out the user
+        LogoutUser();
       }
       toast.error(error.response?.data?.message || "Something went wrong");
     }
@@ -51,9 +52,9 @@ const LogoutDeleteControl = ({ setModalOpen, title, cardId }) => {
   return (
     <div className={styles.logoutModalContainer}>
       <div className={styles.logoutModalContent}>
-        <p className={styles.message}>Are you sure you want to {title}</p>
-        <button className={styles.logoutButton} onClick={logoutClickHandler}>
-          Yes, {title}
+        <p className={styles.message}>Are you sure you want to {actionType}?</p>
+        <button className={styles.logoutButton} onClick={handleAction}>
+          Yes, {actionType}
         </button>
         <button
           className={styles.cancelButton}

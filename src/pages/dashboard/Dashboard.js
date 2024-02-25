@@ -13,15 +13,16 @@ import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const { authorizationToken, BASE_URL, name, LogoutUser } = useAuth();
-  const [selectedOption, setSelectedOption] = useState("This Week");
   const [menuModalState, setMenuModalState] = useState({});
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [sortingTime, setSortingTime] = useState("This Week");
   const [cardData, setCardData] = useState();
   const [loading, setLoading] = useState(true);
   const [cardId, setCardId] = useState("");
 
   const handleChange = (e) => {
-    setSelectedOption(e.target.value);
+    setSortingTime(e.target.value);
+    fetchStats(e.target.value)
   };
 
   const toggleMenuModal = (index) => {
@@ -34,15 +35,20 @@ const Dashboard = () => {
     }));
   };
 
-  const fetchStats = async () => {
+  const fetchStats = async (sortingTime) => {
     try {
-      const response = await axios.get(`${BASE_URL}/card/getallcards`, {
-        headers: {
-          Authorization: authorizationToken,
-        },
-      });
+      setLoading(true)
+      const response = await axios.post(
+        `${BASE_URL}/card/getallcards`,
+        { sortingTime },
+        {
+          headers: {
+            Authorization: authorizationToken,
+          },
+        }
+      );
 
-      // console.log("getstats response: ", response);
+      console.log("getstats response: ", response);
 
       if (response.status === 200) {
         // Successful getstats
@@ -60,7 +66,7 @@ const Dashboard = () => {
       console.error("stats  error:", error);
       // if the error is due to unauthorized access (status code 401)
       if (error.response && error.response.status === 401) {
-        LogoutUser(); // Log out the user
+        // LogoutUser(); // Log out the user
       }
       toast.error(error.response?.data?.message || "Something went wrong");
     }
@@ -123,14 +129,14 @@ const Dashboard = () => {
           <div className={styles.section}>
             <p className={styles.sectionTitle}>Board</p>
             <select
-              value={selectedOption}
-              onChange={handleChange}
-              className={styles.sectionDropDown}
-            >
-              <option value="Today">Today</option>
-              <option value="This Week">This Week</option>
-              <option value="This Month">This Month</option>
-            </select>
+          value={sortingTime}  // Set value attribute to sortingTime state
+          onChange={handleChange}
+          className={styles.sectionDropDown}
+        >
+          <option value="Today">Today</option>
+          <option value="This Week">This Week</option>
+          <option value="This Month">This Month</option>
+        </select>
           </div>
 
           {/* Cards */}

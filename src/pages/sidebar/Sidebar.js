@@ -77,7 +77,7 @@ const Sidebar = () => {
         </div>
       </div>
       {modalOpen && (
-        <LogoutDeleteControl title={"Logout"} setModalOpen={setModalOpen} />
+        <LogoutDeleteControl actionType={"Logout"} setModalOpen={setModalOpen} />
       )}
     </div>
   );

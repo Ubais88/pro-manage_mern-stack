@@ -25,7 +25,11 @@ const MenuModal = ({ cardId }) => {
         </div>
       </div>
       {modalOpen && (
-        <LogoutDeleteControl title={"Delete"} setModalOpen={setModalOpen} />
+        <LogoutDeleteControl
+          actionType={"Delete"}
+          setModalOpen={setModalOpen}
+          cardId={cardId}
+        />
       )}
       {editModalOpen && <CreateChecklist setEditModalOpen={setEditModalOpen} />}
     </div>
