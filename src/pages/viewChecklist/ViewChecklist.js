@@ -20,26 +20,26 @@ const ViewChecklist = () => {
       if (response.status === 200) {
         setCardData(response.data.card);
         setTotalChecked(response.data.totalChecked);
-        setLoading(false);
       } else {
         const message = response.data.message;
         toast.error(message);
       }
+      setLoading(false);
     } catch (error) {
       console.error("stats  error:", error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchAnalysisData();
   }, []);
-  console.log("cardData:", cardData);
 
   return (
     <>
       {loading ? (
-        <h1>Loading</h1>
+        <div className="custom-loader"></div>
       ) : (
         <div className={styles.viewContainer}>
           <div className={styles.logoContainer}>

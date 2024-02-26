@@ -6,7 +6,8 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [name, setName] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [cardData, setCardData] = useState(null);
 
   const authorizationToken = `Bearer ${token}`;
 
@@ -18,7 +19,9 @@ export const AuthProvider = ({ children }) => {
   // logout - remove token from local storage
   const LogoutUser = () => {
     setToken("");
-    return localStorage.removeItem("token");
+    localStorage.removeItem("name")
+    localStorage.removeItem("token")
+    return ;
   };
 
   const isLoggedIn = !!token;
@@ -35,6 +38,8 @@ export const AuthProvider = ({ children }) => {
         setName,
         loading,
         setLoading,
+        cardData,
+        setCardData,
       }}
     >
       {children}

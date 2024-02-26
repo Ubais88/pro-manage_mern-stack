@@ -7,14 +7,15 @@ import styles from "./CreateChecklist.module.css";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuth } from "../../store/auth";
+import moment from "moment";
 
 const CreateChecklist = ({ setEditModalOpen }) => {
-  const { authorizationToken, BASE_URL, LogoutUser } = useAuth();
-  const [dueDate, setDueDate] = useState(null);
+  const { authorizationToken, BASE_URL, LogoutUser, cardData } = useAuth();
+  const [dueDate, setDueDate] = useState(cardData?.dueDate || null);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [checkList, setCheckList] = useState([]);
-  const [priority, setPriority] = useState(null);
-  const [title, setTitle] = useState("");
+  const [checkList, setCheckList] = useState(cardData?.checkList || []);
+  const [priority, setPriority] = useState(cardData?.priority || null);
+  const [title, setTitle] = useState(cardData?.title || "");
 
   const handleDateChange = (date) => {
     setDueDate(date);
@@ -143,7 +144,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
 
           <div className={styles.checklistContainer}>
             <p className={styles.checklistLabel}>
-              Checklist ({checkList.filter((item) => item.checked).length}/
+              Checklist ({checkList.filter((item) => item.isChecked).length}/
               {checkList.length})<sup>*</sup>
             </p>
 
@@ -153,6 +154,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
                   <input
                     type="checkbox"
                     onClick={() => handleCheckboxChange(index)}
+                    defaultChecked={item.isChecked}
                     className={styles.checkbox}
                   />
                   <input
@@ -195,7 +197,9 @@ const CreateChecklist = ({ setEditModalOpen }) => {
               onClick={() => setShowCalendar(true)}
               className={styles.selectDate}
             >
-              {dueDate ? dueDate.toDateString() : "Select Due Date"}
+              {dueDate
+                ? moment(dueDate).format("MM/DD/YYYY")
+                : "Select Due Date"}
             </p>
           )}
           <div className={styles.buttonContainer}>

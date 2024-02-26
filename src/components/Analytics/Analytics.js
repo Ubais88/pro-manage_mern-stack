@@ -6,9 +6,10 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const Analytics = () => {
-  const { authorizationToken, LogoutUser , BASE_URL } = useAuth();
+  const { authorizationToken, LogoutUser, BASE_URL } = useAuth();
   const [cardAnalysisData, setCardAnalysisData] = useState({});
-  const navigate = useNavigate()
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalysisData = async () => {
@@ -26,10 +27,12 @@ const Analytics = () => {
         } else {
           toast.error(response.data.message || "Failed to fetch analysis data");
         }
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         if (error.response && error.response.status === 401) {
           LogoutUser(); // Log out the user
-          navigate("/")
+          navigate("/");
         }
         toast.error(error.response?.data?.message || "Something went wrong");
       }
@@ -48,26 +51,32 @@ const Analytics = () => {
   );
 
   return (
-    <div className={styles.analyticsContainer}>
-      <div className={styles.analyticsHeader}>Analytics</div>
-      <div className={styles.analyticsLists}>
-        <ul className={styles.taskList}>
-          {renderTaskItem("Backlog Tasks", cardAnalysisData.backlog)}
-          {renderTaskItem("To-Do Tasks", cardAnalysisData.todo)}
-          {renderTaskItem("In-Progress Tasks", cardAnalysisData.inprogress)}
-          {renderTaskItem("Completed Tasks", cardAnalysisData.done)}
-        </ul>
-        <ul className={styles.taskList}>
-          {renderTaskItem("Low Priority", cardAnalysisData.lowpriority)}
-          {renderTaskItem(
-            "Moderate Priority",
-            cardAnalysisData.moderatepriority
-          )}
-          {renderTaskItem("High Priority", cardAnalysisData.highpriority)}
-          {renderTaskItem("Due Date Tasks", cardAnalysisData.dueDatePassed)}
-        </ul>
-      </div>
-    </div>
+    <>
+      {loading ? (
+        <div className="custom-loader"></div>
+      ) : (
+        <div className={styles.analyticsContainer}>
+          <div className={styles.analyticsHeader}>Analytics</div>
+          <div className={styles.analyticsLists}>
+            <ul className={styles.taskList}>
+              {renderTaskItem("Backlog Tasks", cardAnalysisData.backlog)}
+              {renderTaskItem("To-Do Tasks", cardAnalysisData.todo)}
+              {renderTaskItem("In-Progress Tasks", cardAnalysisData.inprogress)}
+              {renderTaskItem("Completed Tasks", cardAnalysisData.done)}
+            </ul>
+            <ul className={styles.taskList}>
+              {renderTaskItem("Low Priority", cardAnalysisData.lowpriority)}
+              {renderTaskItem(
+                "Moderate Priority",
+                cardAnalysisData.moderatepriority
+              )}
+              {renderTaskItem("High Priority", cardAnalysisData.highpriority)}
+              {renderTaskItem("Due Date Tasks", cardAnalysisData.dueDatePassed)}
+            </ul>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

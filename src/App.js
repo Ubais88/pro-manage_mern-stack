@@ -33,3 +33,6 @@ const App = () => {
 };
 
 export default App;
+
+
+{/* <div class="custom-loader"></div> */}

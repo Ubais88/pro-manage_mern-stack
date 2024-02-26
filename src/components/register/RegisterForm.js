@@ -8,7 +8,7 @@ import { useAuth } from "../../store/auth";
 import axios from "axios";
 
 const RegisterForm = ({ setLoginFormActive }) => {
-  const { BASE_URL } = useAuth();
+  const { BASE_URL , loading , setLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -58,6 +58,7 @@ const RegisterForm = ({ setLoginFormActive }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isFormValid()) {
+      setLoading(true);
       try {
         const response = await axios.post(
           `${BASE_URL}/auth/signup`,
@@ -87,129 +88,141 @@ const RegisterForm = ({ setLoginFormActive }) => {
           toast.error(res_data.message);
           //console.log("Invalid credential");
         }
+        setLoading(false)
       } catch (error) {
         // Log any errors
         console.error("Signup error:", error);
         toast.error(error.response.data.message);
+        setLoading(false)
       }
     }
   };
 
   return (
-    <div className={styles.mainContainer}>
-      <form className={styles.formContainer} onSubmit={handleSubmit}>
-        {/* name */}
-        <div className={styles.fieldContainer}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            className={styles.inputField}
-            onChange={handleInputChange}
-          />
-          <CiUser fontSize={20} fill="#828282" className={styles.inputIcon} />
-        </div>
-        <div className={styles.errorContainer}>
-          <span className={styles.error}>{errors.name}</span>
-        </div>
-
-        {/* email */}
-        <div className={styles.fieldContainer}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className={styles.inputField}
-            onChange={handleInputChange}
-          />
-          <MdOutlineEmail
-            fontSize={20}
-            fill="#828282"
-            className={styles.inputIcon}
-          />
-        </div>
-        <div className={styles.errorContainer}>
-          <span className={styles.error}>{errors.email}</span>
-        </div>
-
-        {/* password */}
-        <div className={styles.fieldContainer}>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Password"
-            className={styles.inputField}
-            onChange={handleInputChange}
-          />
-          <MdLockOutline
-            fontSize={20}
-            fill="#828282"
-            className={styles.inputIcon}
-          />
-          <span onClick={() => setShowPassword((prev) => !prev)}>
-            {showPassword ? (
-              <AiOutlineEyeInvisible
-                fontSize={22}
-                fill="#828282"
-                className={styles.eyeIcon}
+    <>
+      {loading ? (
+        <div className="custom-loader"></div>
+      ) : (
+        <div className={styles.mainContainer}>
+          <form className={styles.formContainer} onSubmit={handleSubmit}>
+            {/* name */}
+            <div className={styles.fieldContainer}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                className={styles.inputField}
+                onChange={handleInputChange}
               />
-            ) : (
-              <AiOutlineEye
-                fontSize={22}
+              <CiUser
+                fontSize={20}
                 fill="#828282"
-                className={styles.eyeIcon}
+                className={styles.inputIcon}
               />
-            )}
-          </span>
-        </div>
-        <div className={styles.errorContainer}>
-          <span className={styles.error}>{errors.password}</span>
-        </div>
+            </div>
+            <div className={styles.errorContainer}>
+              <span className={styles.error}>{errors.name}</span>
+            </div>
 
-        {/* confirm password */}
-        <div className={styles.fieldContainer}>
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            className={styles.inputField}
-            onChange={handleInputChange}
-          />
-          <MdLockOutline
-            fontSize={20}
-            fill="#828282"
-            className={styles.inputIcon}
-          />
-          <span onClick={() => setShowConfirmPassword((prev) => !prev)}>
-            {showConfirmPassword ? (
-              <AiOutlineEyeInvisible
-                fontSize={22}
-                fill="#828282"
-                className={styles.eyeIcon}
+            {/* email */}
+            <div className={styles.fieldContainer}>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                className={styles.inputField}
+                onChange={handleInputChange}
               />
-            ) : (
-              <AiOutlineEye
-                fontSize={22}
+              <MdOutlineEmail
+                fontSize={20}
                 fill="#828282"
-                className={styles.eyeIcon}
+                className={styles.inputIcon}
               />
-            )}
-          </span>
-        </div>
-        <div className={styles.errorContainer}>
-          <span className={styles.error}>{errors.confirmPassword}</span>
-        </div>
+            </div>
+            <div className={styles.errorContainer}>
+              <span className={styles.error}>{errors.email}</span>
+            </div>
 
-        <button className={styles.loginButton}>Register</button>
-        <p className={styles.reminder}>Have an account?</p>
-      </form>
-      <button
-        className={styles.register}
-        onClick={() => setLoginFormActive((prev) => !prev)}
-      >
-        Log in
-      </button>
-    </div>
+            {/* password */}
+            <div className={styles.fieldContainer}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                className={styles.inputField}
+                onChange={handleInputChange}
+              />
+              <MdLockOutline
+                fontSize={20}
+                fill="#828282"
+                className={styles.inputIcon}
+              />
+              <span onClick={() => setShowPassword((prev) => !prev)}>
+                {showPassword ? (
+                  <AiOutlineEyeInvisible
+                    fontSize={22}
+                    fill="#828282"
+                    className={styles.eyeIcon}
+                  />
+                ) : (
+                  <AiOutlineEye
+                    fontSize={22}
+                    fill="#828282"
+                    className={styles.eyeIcon}
+                  />
+                )}
+              </span>
+            </div>
+            <div className={styles.errorContainer}>
+              <span className={styles.error}>{errors.password}</span>
+            </div>
+
+            {/* confirm password */}
+            <div className={styles.fieldContainer}>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                className={styles.inputField}
+                onChange={handleInputChange}
+              />
+              <MdLockOutline
+                fontSize={20}
+                fill="#828282"
+                className={styles.inputIcon}
+              />
+              <span onClick={() => setShowConfirmPassword((prev) => !prev)}>
+                {showConfirmPassword ? (
+                  <AiOutlineEyeInvisible
+                    fontSize={22}
+                    fill="#828282"
+                    className={styles.eyeIcon}
+                  />
+                ) : (
+                  <AiOutlineEye
+                    fontSize={22}
+                    fill="#828282"
+                    className={styles.eyeIcon}
+                  />
+                )}
+              </span>
+            </div>
+            <div className={styles.errorContainer}>
+              <span className={styles.error}>{errors.confirmPassword}</span>
+            </div>
+
+            <button className={styles.loginButton}>Register</button>
+            <p className={styles.reminder}>Have an account?</p>
+          </form>
+          <button
+            className={styles.register}
+            onClick={() => setLoginFormActive((prev) => !prev)}
+          >
+            Log in
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

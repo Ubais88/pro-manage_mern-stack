@@ -3,22 +3,45 @@ import styles from "./Dashboard.module.css";
 import { VscCollapseAll } from "react-icons/vsc";
 import { IoEllipseSharp } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
-import { MdOutlineKeyboardArrowUp } from "react-icons/md";
+import {
+  MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowUp,
+} from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import MenuModal from "../../components/menuModal/MenuModal";
 import CreateChecklist from "../addChecklistModal/CreateChecklist";
 import { useAuth } from "../../store/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const { authorizationToken, BASE_URL, name, LogoutUser } = useAuth();
+  const { authorizationToken, BASE_URL, LogoutUser } = useAuth();
   const [menuModalState, setMenuModalState] = useState({});
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [sortingTime, setSortingTime] = useState("This Week");
   const [cardData, setCardData] = useState();
-  const [loading, setLoading] = useState(true);
   const [cardId, setCardId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] = useState("");
+  const [checklistCollapse, setChecklistCollapse] = useState({});
+  const navigate = useNavigate()
+
+  const collapseAllChecklistsInSection = (sectionName) => {
+    const updatedCollapseState = { ...checklistCollapse };
+    cardData[sectionName].forEach((card) => {
+      updatedCollapseState[card._id] = true;
+    });
+    setChecklistCollapse(updatedCollapseState);
+  };
+
+  const toggleChecklistCollapse = (cardId) => {
+    setChecklistCollapse((prevState) => ({
+      ...prevState,
+      [cardId]: !prevState[cardId],
+    }));
+  };
 
   const handleChange = (e) => {
     setSortingTime(e.target.value);
@@ -37,7 +60,6 @@ const Dashboard = () => {
 
   const fetchStats = async (sortingTime) => {
     try {
-      setLoading(true);
       const response = await axios.post(
         `${BASE_URL}/card/getallcards`,
         { sortingTime },
@@ -53,20 +75,22 @@ const Dashboard = () => {
       if (response.status === 200) {
         // Successful getstats
         setCardData(response.data.cards);
-        setLoading(false);
-        console.log("response. ", response.data.cards);
+        console.log("response: ", response.data.cards);
       } else {
         // Failed getstats
         const message = response.data.message;
         toast.error(message);
         console.log("Invalid credential");
       }
+      setLoading(false);
     } catch (error) {
       // Log any errors
+      setLoading(false);
       console.error("stats  error:", error);
       // if the error is due to unauthorized access (status code 401)
       if (error.response && error.response.status === 401) {
-        // LogoutUser(); // Log out the user
+        LogoutUser(); // Log out the user
+        navigate('/')
       }
       toast.error(error.response?.data?.message || "Something went wrong");
     }
@@ -78,9 +102,51 @@ const Dashboard = () => {
 
   const moveCard = async (targetSection, cardId) => {
     try {
+      // setLoading(true);
       const response = await axios.put(
         `${BASE_URL}/card/movecard/${cardId}`,
         { targetSection },
+        {
+          headers: {
+            Authorization: authorizationToken,
+          },
+        }
+      );
+
+      // console.log("getstats response: ", response);
+
+      if (response.status === 200) {
+        // Successful getstats
+        fetchStats();
+      } else {
+        // Failed getstats
+        const message = response.data.message;
+        toast.error(message);
+        console.log("Invalid credential");
+      }
+      setLoading(false);
+    } catch (error) {
+      // Log any errors
+      setLoading(false);
+      console.error("stats  error:", error);
+      // if the error is due to unauthorized access (status code 401)
+      if (error.response && error.response.status === 401) {
+        LogoutUser(); // Log out the user
+      }
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  const moveCardHandler = (targetSection, cardId) => {
+    console.log("moveCardHandler : ", targetSection, cardId);
+    moveCard(targetSection, cardId);
+  };
+
+  const updateChecklist = async (cardId, itemId, isChecked) => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/card/toggle/${cardId}/checklist/${itemId}`,
+        { isChecked },
         {
           headers: {
             Authorization: authorizationToken,
@@ -111,25 +177,27 @@ const Dashboard = () => {
     }
   };
 
-  const moveCardHandler = (targetSection, cardId) => {
-    console.log("moveCardHandler : ", targetSection, cardId);
-    moveCard(targetSection, cardId);
-  };
+  useEffect(() => {
+    const formattedDate = moment().format("Do MMM, YYYY");
+    setCurrentDate(formattedDate);
+  }, []);
 
   return (
     <div className={styles.dashboardContainer}>
       {loading ? (
-        <h1>Loading</h1>
+        <div className="custom-loader"></div>
       ) : (
         <>
           <div className={styles.header}>
-            <p className={styles.welcomeMessage}>Welcome! {name}</p>
-            <p className={styles.date}>12th Jan, 2024</p>
+            <p className={styles.welcomeMessage}>
+              Welcome! {localStorage.getItem("name")}
+            </p>
+            <p className={styles.date}>{currentDate}</p>
           </div>
           <div className={styles.section}>
             <p className={styles.sectionTitle}>Board</p>
             <select
-              value={sortingTime} // Set value attribute to sortingTime state
+              value={sortingTime}
               onChange={handleChange}
               className={styles.sectionDropDown}
             >
@@ -149,6 +217,7 @@ const Dashboard = () => {
                     color="#767575"
                     size="20"
                     className={styles.collapseIcon}
+                    onClick={() => collapseAllChecklistsInSection("Backlog")}
                   />
                 </div>
 
@@ -195,12 +264,25 @@ const Dashboard = () => {
                               }
                               /{card.checkList.length})
                             </p>
-                            <MdOutlineKeyboardArrowUp
-                              className={styles.arrowIcon}
-                            />
+                            {checklistCollapse[card._id] ? (
+                              <MdOutlineKeyboardArrowDown
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            ) : (
+                              <MdOutlineKeyboardArrowUp
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            )}
                           </div>
 
-                          {card.checkList.length > 0 &&
+                          {!checklistCollapse[card._id] &&
+                            card.checkList.length > 0 &&
                             card.checkList.map((checkList) => (
                               <div
                                 className={styles.checklistContent}
@@ -210,22 +292,19 @@ const Dashboard = () => {
                                   type="checkbox"
                                   className={styles.checkBox}
                                   defaultChecked={checkList.isChecked}
+                                  onClick={(e) =>
+                                    updateChecklist(
+                                      card._id,
+                                      checkList._id,
+                                      e.target.checked
+                                    )
+                                  }
                                 />
                                 <p className={styles.checklistText}>
                                   {checkList.text}
                                 </p>
                               </div>
                             ))}
-
-                          <div className={styles.checklistContent}>
-                            <input
-                              type="checkbox"
-                              className={styles.checkBox}
-                            />
-                            <p className={styles.checklistText}>
-                              Task to be done
-                            </p>
-                          </div>
                         </div>
 
                         <div className={styles.dateAndBtn}>
@@ -288,6 +367,7 @@ const Dashboard = () => {
                       color="#767575"
                       size="20"
                       className={styles.collapseIcon}
+                      onClick={() => collapseAllChecklistsInSection("ToDo")}
                     />
                   </div>
                 </div>
@@ -335,12 +415,25 @@ const Dashboard = () => {
                               }
                               /{card.checkList.length})
                             </p>
-                            <MdOutlineKeyboardArrowUp
-                              className={styles.arrowIcon}
-                            />
+                            {checklistCollapse[card._id] ? (
+                              <MdOutlineKeyboardArrowDown
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            ) : (
+                              <MdOutlineKeyboardArrowUp
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            )}
                           </div>
 
-                          {card.checkList.length > 0 &&
+                          {!checklistCollapse[card._id] &&
+                            card.checkList.length > 0 &&
                             card.checkList.map((checkList) => (
                               <div
                                 className={styles.checklistContent}
@@ -350,6 +443,13 @@ const Dashboard = () => {
                                   type="checkbox"
                                   className={styles.checkBox}
                                   defaultChecked={checkList.isChecked}
+                                  onClick={(e) =>
+                                    updateChecklist(
+                                      card._id,
+                                      checkList._id,
+                                      e.target.checked
+                                    )
+                                  }
                                 />
                                 <p className={styles.checklistText}>
                                   {checkList.text}
@@ -412,6 +512,7 @@ const Dashboard = () => {
                     color="#767575"
                     size="20"
                     className={styles.collapseIcon}
+                    onClick={() => collapseAllChecklistsInSection("Inprogress")}
                   />
                 </div>
 
@@ -458,12 +559,25 @@ const Dashboard = () => {
                               }
                               /{card.checkList.length})
                             </p>
-                            <MdOutlineKeyboardArrowUp
-                              className={styles.arrowIcon}
-                            />
+                            {checklistCollapse[card._id] ? (
+                              <MdOutlineKeyboardArrowDown
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            ) : (
+                              <MdOutlineKeyboardArrowUp
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            )}
                           </div>
 
-                          {card.checkList.length > 0 &&
+                          {!checklistCollapse[card._id] &&
+                            card.checkList.length > 0 &&
                             card.checkList.map((checkList) => (
                               <div
                                 className={styles.checklistContent}
@@ -473,6 +587,13 @@ const Dashboard = () => {
                                   type="checkbox"
                                   className={styles.checkBox}
                                   defaultChecked={checkList.isChecked}
+                                  onClick={(e) =>
+                                    updateChecklist(
+                                      card._id,
+                                      checkList._id,
+                                      e.target.checked
+                                    )
+                                  }
                                 />
                                 <p className={styles.checklistText}>
                                   {checkList.text}
@@ -535,6 +656,7 @@ const Dashboard = () => {
                     color="#767575"
                     size="20"
                     className={styles.collapseIcon}
+                    onClick={() => collapseAllChecklistsInSection("Done")}
                   />
                 </div>
 
@@ -581,12 +703,24 @@ const Dashboard = () => {
                               }
                               /{card.checkList.length})
                             </p>
-                            <MdOutlineKeyboardArrowUp
-                              className={styles.arrowIcon}
-                            />
+                            {checklistCollapse[card._id] ? (
+                              <MdOutlineKeyboardArrowDown
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            ) : (
+                              <MdOutlineKeyboardArrowUp
+                                className={styles.arrowIcon}
+                                onClick={() =>
+                                  toggleChecklistCollapse(card._id)
+                                }
+                              />
+                            )}
                           </div>
-
-                          {card.checkList.length > 0 &&
+                          {!checklistCollapse[card._id] &&
+                            card.checkList.length > 0 &&
                             card.checkList.map((checkList) => (
                               <div
                                 className={styles.checklistContent}
@@ -596,6 +730,13 @@ const Dashboard = () => {
                                   type="checkbox"
                                   className={styles.checkBox}
                                   defaultChecked={checkList.isChecked}
+                                  onClick={(e) =>
+                                    updateChecklist(
+                                      card._id,
+                                      checkList._id,
+                                      e.target.checked
+                                    )
+                                  }
                                 />
                                 <p className={styles.checklistText}>
                                   {checkList.text}
