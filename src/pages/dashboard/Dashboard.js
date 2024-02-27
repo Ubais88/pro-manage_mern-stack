@@ -26,7 +26,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState("");
   const [checklistCollapse, setChecklistCollapse] = useState({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const collapseAllChecklistsInSection = (sectionName) => {
     const updatedCollapseState = { ...checklistCollapse };
@@ -90,7 +90,7 @@ const Dashboard = () => {
       // if the error is due to unauthorized access (status code 401)
       if (error.response && error.response.status === 401) {
         LogoutUser(); // Log out the user
-        navigate('/')
+        navigate("/");
       }
       toast.error(error.response?.data?.message || "Something went wrong");
     }

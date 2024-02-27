@@ -10,8 +10,9 @@ import { useAuth } from "../../store/auth";
 import moment from "moment";
 
 const CreateChecklist = ({ setEditModalOpen }) => {
+
   const { authorizationToken, BASE_URL, LogoutUser, cardData } = useAuth();
-  const [dueDate, setDueDate] = useState(cardData?.dueDate || null);
+  const [ dueDate, setDueDate ] = useState(cardData?.dueDate || null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [checkList, setCheckList] = useState(cardData?.checkList || []);
   const [priority, setPriority] = useState(cardData?.priority || null);
@@ -69,36 +70,47 @@ const CreateChecklist = ({ setEditModalOpen }) => {
       toast.error("Please fill all compulsory fields.");
     } else {
       try {
-        const response = await axios.post(
-          `${BASE_URL}/card/create`,
-          { title, priority, checkList, dueDate },
-          {
-            headers: {
-              Authorization: authorizationToken,
-            },
-          }
-        );
+        let response;
+        if (cardData) {
+          // update prev checklist item
+          const cardId = cardData._id;
+          response = await axios.put(
+            `${BASE_URL}/card/update/${cardId}`,
+            { title, priority, checkList, dueDate },
+            {
+              headers: {
+                Authorization: authorizationToken,
+              },
+            }
+          );
+        } else {
+          // create new checklist item
+          response = await axios.post(
+            `${BASE_URL}/card/create`,
+            { title, priority, checkList, dueDate },
+            {
+              headers: {
+                Authorization: authorizationToken,
+              },
+            }
+          );
+        }
 
-        if (response.status === 201) {
-          // Successful getstats
+        if (response.status === 200 || response.status === 201) {
           setEditModalOpen(false);
         } else {
-          // Failed getstats
           const message = response.data.message;
           toast.error(message);
           console.log("Invalid credential");
         }
       } catch (error) {
-        // Log any errors
         console.error("stats  error:", error);
-        // if the error is due to unauthorized access (status code 401)
         if (error.response && error.response.status === 401) {
-          LogoutUser(); // Log out the user
+          LogoutUser();
         }
         toast.error(error.response?.data?.message || "Something went wrong");
       }
     }
-    // console.log("checkList: ", checkList);
   };
 
   const priorityLevels = [
@@ -186,12 +198,47 @@ const CreateChecklist = ({ setEditModalOpen }) => {
         </div>
 
         <div className={styles.dateContainer}>
+          {showCalendar && (
+            <div className={styles.calendarContainer}>
+              <Calendar
+                onChange={handleDateChange}
+                value={dueDate}
+                className={styles.calendar}
+              />
+            </div>
+          )}
+          <p
+            onClick={() => setShowCalendar(true)}
+            className={styles.selectDate}
+          >
+            {dueDate ? moment(dueDate).format("MM/DD/YYYY") : "Select Due Date"}
+          </p>
+
+          <div className={styles.buttonContainer}>
+            <button
+              className={styles.cancelButton}
+              onClick={() => setEditModalOpen(false)}
+            >
+              Cancel
+            </button>
+            <button className={styles.saveButton} onClick={handleSave}>
+              Save
+            </button>
+          </div>
+        </div>
+
+        {/* <div className={styles.dateContainer}>
           {showCalendar ? (
-            <Calendar
-              onChange={handleDateChange}
-              value={dueDate}
-              className={styles.calendar}
-            />
+            <>
+              <div className={styles.calendarContainer}>
+                <Calendar
+                  onChange={handleDateChange}
+                  value={dueDate}
+                  className={styles.calendar}
+                />
+              </div>
+              <span></span>
+            </>
           ) : (
             <p
               onClick={() => setShowCalendar(true)}
@@ -213,7 +260,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
               Save
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

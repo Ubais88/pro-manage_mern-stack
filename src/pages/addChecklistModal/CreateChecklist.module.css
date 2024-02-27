@@ -25,10 +25,10 @@
   justify-content: space-between;
 }
 
-.topContainer{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.topContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .inputLabel,
@@ -39,12 +39,11 @@
   color: #20102b;
 }
 
-.inputContainer{
+.inputContainer {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
-
 
 sup {
   color: #ff0000;
@@ -78,8 +77,8 @@ sup {
   background-color: transparent;
 }
 
-.selectedPriority{
-    background-color: #EEECEC;
+.selectedPriority {
+  background-color: #eeecec;
 }
 
 .addnewChecklistBtn {
@@ -123,8 +122,24 @@ sup {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
+.calendarContainer {
+  position: absolute;
+  top: 32%;
+  left: 27%;
+  width: 25%;
+}
+.calendar {
+  box-shadow: 0px 12px 22px 0px #26242440;
+  border: none;
+}
+
+.calendar,
+.react-calendar__tile {
+  line-height: 0.4rem;
+}
 .selectDate {
   font-size: 1rem;
   font-weight: 500;

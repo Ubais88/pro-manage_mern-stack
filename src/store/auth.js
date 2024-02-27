@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const AuthContext = createContext();
@@ -8,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [cardData, setCardData] = useState(null);
+  const navigate = useNavigate();
 
   const authorizationToken = `Bearer ${token}`;
 
@@ -21,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     setToken("");
     localStorage.removeItem("name")
     localStorage.removeItem("token")
+    navigate('/')
     return ;
   };
 
