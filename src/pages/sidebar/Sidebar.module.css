@@ -5,7 +5,7 @@
 }
 
 .sidebarContainer {
-  width: 17vw;
+  width: 18vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -40,10 +40,6 @@
   color: #000000;
 }
 
-/* .sandboxLogo{
-    height: 3rem;
-} */
-
 .menuItems {
   display: flex;
   flex-direction: column;
@@ -59,11 +55,16 @@
   display: flex;
   padding: 0.4rem ;
   align-items: center;
-  justify-content: center;
   gap: 1rem;
-  width: 100%;
 }
 
+.text{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-start;
+  margin-left: 1rem;
+}
 
 .selectedMenuItem {
   background-color: #4391ed1a;

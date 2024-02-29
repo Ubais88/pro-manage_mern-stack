@@ -9,6 +9,11 @@ export const AuthProvider = ({ children }) => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [cardData, setCardData] = useState(null);
+  const [menuModalState, setMenuModalState] = useState({});
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const [actionType, setActionType] = useState("");
+  const [sortingTime, setSortingTime] = useState("This Week");
   const navigate = useNavigate();
 
   const authorizationToken = `Bearer ${token}`;
@@ -21,10 +26,10 @@ export const AuthProvider = ({ children }) => {
   // logout - remove token from local storage
   const LogoutUser = () => {
     setToken("");
-    localStorage.removeItem("name")
-    localStorage.removeItem("token")
-    navigate('/')
-    return ;
+    localStorage.removeItem("name");
+    localStorage.removeItem("token");
+    navigate("/");
+    return;
   };
 
   const isLoggedIn = !!token;
@@ -43,6 +48,16 @@ export const AuthProvider = ({ children }) => {
         setLoading,
         cardData,
         setCardData,
+        menuModalState,
+        setMenuModalState,
+        editModalOpen,
+        setEditModalOpen,
+        logoutModalOpen,
+        setLogoutModalOpen,
+        actionType,
+        setActionType,
+        sortingTime,
+        setSortingTime,
       }}
     >
       {children}

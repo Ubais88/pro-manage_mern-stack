@@ -26,13 +26,10 @@ const App = () => {
             </div>
           }
         />
-        <Route path="/view/checklist/:cardId" element={<ViewChecklist/>} />
+        <Route path="/view/checklist/:cardId" element={<ViewChecklist />} />
       </Routes>
     </div>
   );
 };
 
 export default App;
-
-
-{/* <div class="custom-loader"></div> */}

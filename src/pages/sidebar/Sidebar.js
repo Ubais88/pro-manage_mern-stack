@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Sidebar.module.css";
-import { useNavigate } from "react-router-dom";
 import { LuLayout } from "react-icons/lu";
 import { GoDatabase } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineLogout } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 import CodeSandBox from "../../assets/codesandbox.png";
-import LogoutDeleteControl from "../logoutDeleteControl/LogoutDeleteControl";
+import { useAuth } from "../../store/auth";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const { setLogoutModalOpen, setActionType } = useAuth();
   const [selectedMenuItem, setSelectedMenuItem] = useState("dashboard");
-  const [modalOpen, setModalOpen] = useState(false);
 
-  const handleMenuItemClick = (e) => {
-    const menuItem = e.target.id;
-    setSelectedMenuItem(menuItem);
+  const handleMenuItemClick = (value) => {
+    setSelectedMenuItem(value);
   };
 
   const logoutClickHandler = () => {
-    setModalOpen(true);
+    setActionType("Logout");
+    setLogoutModalOpen(true);
   };
 
   useEffect(() => {
@@ -27,58 +27,41 @@ const Sidebar = () => {
   }, [selectedMenuItem]);
 
   return (
-    <div>
-      <div className={styles.sidebarContainer}>
-        <div className={styles.routes}>
-          <div className={styles.logoContainer}>
-            <img src={CodeSandBox} alt="logo" className={styles.sandboxLogo} />
-            <h1 className={styles.logoText}>Pro Manage</h1>
-          </div>
-
-          <div className={styles.menuItems}>
-            <div
-              onClick={handleMenuItemClick}
-              className={`${styles.menuItem} ${
-                selectedMenuItem === "dashboard" && styles.selectedMenuItem
-              }`}
-              id="dashboard"
-            >
-              <LuLayout />
-              Board
-            </div>
-            <div
-              className={`${styles.menuItem} ${
-                selectedMenuItem === "analytics" && styles.selectedMenuItem
-              }`}
-              id="analytics"
-              onClick={handleMenuItemClick}
-            >
-              <GoDatabase />
-              Analytics
-            </div>
-            <div
-              className={`${styles.menuItem} ${
-                selectedMenuItem === "settings" && styles.selectedMenuItem
-              }`}
-              id="settings"
-              onClick={handleMenuItemClick}
-            >
-              <IoSettingsOutline />
-              Settings
-            </div>
-          </div>
+    <div className={styles.sidebarContainer}>
+      <div className={styles.routes}>
+        <div className={styles.logoContainer}>
+          <img src={CodeSandBox} alt="logo" className={styles.sandboxLogo} />
+          <h1 className={styles.logoText}>Pro Manage</h1>
         </div>
 
-        <div className={styles.logoutContainer}>
-          <h2 className={styles.logoutText} onClick={logoutClickHandler}>
-            <HiOutlineLogout />
-            Logout
-          </h2>
+        <div className={styles.menuItems}>
+          {["dashboard", "analytics", "settings"].map((item) => (
+            <div
+              key={item}
+              className={`${styles.menuItem} ${
+                selectedMenuItem === item && styles.selectedMenuItem
+              }`}
+              onClick={() => handleMenuItemClick(item)}
+            >
+              <div className={styles.text}>
+                {item === "dashboard" && <LuLayout />}
+                {item === "analytics" && <GoDatabase />}
+                {item === "settings" && <IoSettingsOutline />}
+                {item === "dashboard"
+                  ? "Board"
+                  : item.charAt(0).toUpperCase() + item.slice(1)}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-      {modalOpen && (
-        <LogoutDeleteControl actionType={"Logout"} setModalOpen={setModalOpen} />
-      )}
+
+      <div className={styles.logoutContainer}>
+        <h2 className={styles.logoutText} onClick={logoutClickHandler}>
+          <HiOutlineLogout />
+          Logout
+        </h2>
+      </div>
     </div>
   );
 };

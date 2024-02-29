@@ -81,33 +81,11 @@
   font-weight: 500;
 }
 
-.cardBody {
-  background-color: #ffff;
-  border-radius: 1rem;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
 .allCards {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
   overflow-y: auto;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-}
-
-.itemIcon {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
 }
 
 .collapseIcon {
@@ -117,106 +95,6 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  cursor: pointer;
-}
-
-.itemLabel {
-  font-family: Poppins;
-  font-size: 0.5rem;
-  font-weight: 500;
-  color: #707070;
-}
-
-.moreIcon {
-  color: "#00000";
-  cursor: pointer;
-}
-.menuModal {
-  position: absolute;
-  top: 70%;
-  left: 57%;
- }
-
-.itemName {
-  font-family: Poppins;
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.checklistHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.checklistContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.checklistContent {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.5rem;
-  border-radius: 0.6rem;
-  border: 1px solid #e2e2e2;
-}
-
-
-.checklistText {
-  font-family: Inter;
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: #000000;
-}
-
-.checklistCount {
-  font-family: Inter;
-  font-size: 0.8rem;
-  font-weight: 500;
-}
-
-.arrowIcon {
-  background-color: #eeecec;
-  color: #767575;
-  font-size: 1.4rem;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.dateAndBtn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.dateButton {
-  color: #ffffff;
-  border-radius: 0.5rem;
-  padding: 0.3rem;
-  font-family: Poppins;
-  font-size: 0.6rem;
-  font-weight: 500;
-  text-align: center;
-} 
-
-
-.buttonContainer {
-  display: flex;
-  gap: 0.2rem;
-}
-
-.statusButton {
-  background-color: #eeecec;
-  color: #767575;
-  border: none;
-  font-family: Poppins;
-  font-size: 0.6rem;
-  font-weight: 500;
-  padding: 0.3rem;
-  border-radius: 0.5rem;
   cursor: pointer;
 }
 
@@ -243,4 +121,3 @@
 .cardContainer::-webkit-scrollbar-track {
   background-color: #d6eaf4;
 }
-

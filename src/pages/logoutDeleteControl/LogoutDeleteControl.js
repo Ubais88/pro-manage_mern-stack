@@ -5,8 +5,15 @@ import { useAuth } from "../../store/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const LogoutDeleteControl = ({ setModalOpen, actionType, cardId }) => {
-  const { authorizationToken, LogoutUser, isLoggedIn, BASE_URL } = useAuth();
+const LogoutDeleteControl = ({ fetchStats, cardId }) => {
+  const {
+    authorizationToken,
+    LogoutUser,
+    isLoggedIn,
+    setLogoutModalOpen,
+    actionType,
+    BASE_URL,
+  } = useAuth();
   const navigate = useNavigate();
   if (!isLoggedIn) {
     navigate("/");
@@ -35,7 +42,8 @@ const LogoutDeleteControl = ({ setModalOpen, actionType, cardId }) => {
 
       if (response.status === 200) {
         toast.success("Card deleted successfully");
-        setModalOpen(false);
+        fetchStats();
+        setLogoutModalOpen(false);
       } else {
         const message = response.data.message;
         toast.error(message);
@@ -58,7 +66,7 @@ const LogoutDeleteControl = ({ setModalOpen, actionType, cardId }) => {
         </button>
         <button
           className={styles.cancelButton}
-          onClick={() => setModalOpen(false)}
+          onClick={() => setLogoutModalOpen(false)}
         >
           Cancel
         </button>

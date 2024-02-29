@@ -1,21 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./MenuModal.module.css";
-import LogoutDeleteControl from "../../pages/logoutDeleteControl/LogoutDeleteControl.js";
 import handleCopyClick from "../../utils/clipboardUtils.js";
-import CreateChecklist from "../../pages/addChecklistModal/CreateChecklist.js";
 import { useAuth } from "../../store/auth.js";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const MenuModal = ({ cardId }) => {
-  const { authorizationToken, BASE_URL, setCardData, LogoutUser } = useAuth();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
+  const {
+    authorizationToken,
+    BASE_URL,
+    setCardData,
+    setMenuModalState,
+    LogoutUser,
+    setEditModalOpen,
+    setActionType,
+    setLogoutModalOpen,
+  } = useAuth();
+
   const handleShareClick = () => {
     handleCopyClick(cardId);
+    setMenuModalState({});
   };
 
   const editHandler = async () => {
+    setMenuModalState({});
     try {
       const response = await axios.get(`${BASE_URL}/card/getcard/${cardId}`, {
         headers: {
@@ -27,23 +35,25 @@ const MenuModal = ({ cardId }) => {
 
       if (response.status === 200) {
         setCardData(response.data.card);
-        setEditModalOpen(true)
-        //console.log("quizData response:", response.data);
+        setEditModalOpen(true);
       } else {
-        // Failed getstats
+      
         const message = response.data.message;
         toast.error(message);
-        //console.log("Invalid credential");
       }
     } catch (error) {
-      // Log any errors
       console.error("stats  error:", error);
-      // if the error is due to unauthorized access (status code 401)
       if (error.response && error.response.status === 401) {
-        LogoutUser(); // Log out the user
+        LogoutUser(); 
       }
       toast.error("Something went wrong");
     }
+  };
+
+  const handleDelete = () => {
+    setLogoutModalOpen(true);
+    setActionType("Delete");
+    setMenuModalState({});
   };
 
   return (
@@ -55,20 +65,10 @@ const MenuModal = ({ cardId }) => {
         <div className={styles.share} onClick={handleShareClick}>
           Share
         </div>
-        <div className={styles.delete} onClick={() => setModalOpen(true)}>
+        <div className={styles.delete} onClick={handleDelete}>
           Delete
         </div>
       </div>
-      {modalOpen && (
-        <LogoutDeleteControl
-          actionType={"Delete"}
-          setModalOpen={setModalOpen}
-          cardId={cardId}
-        />
-      )}
-      {editModalOpen && (
-        <CreateChecklist cardId={cardId} setEditModalOpen={setEditModalOpen} />
-      )}
     </div>
   );
 };

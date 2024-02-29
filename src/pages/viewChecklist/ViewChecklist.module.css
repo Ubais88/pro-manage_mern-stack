@@ -118,6 +118,16 @@
   border-radius: 5px;
 }
 
+.noCardHolder{
+  font-family: Inter;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  height: 100vh;
+  width: 100vw;
+}
+
 @media screen and (min-width: 300px) and (max-width: 480px) {
   .logoContainer {
     margin-left: 1rem;

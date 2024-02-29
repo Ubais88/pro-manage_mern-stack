@@ -5,18 +5,18 @@ import { IoEllipseSharp } from "react-icons/io5";
 import { useAuth } from "../../store/auth";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const ViewChecklist = () => {
   const { cardId } = useParams();
   const [loading, setLoading] = useState(true);
-  const [cardData, setCardData] = useState();
+  const [cardData, setCardData] = useState(null); // Initialize cardData as null
   const [totalChecked, setTotalChecked] = useState(0);
   const { BASE_URL } = useAuth();
 
   const fetchAnalysisData = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/card/getcard/${cardId}`);
-
       if (response.status === 200) {
         setCardData(response.data.card);
         setTotalChecked(response.data.totalChecked);
@@ -40,7 +40,7 @@ const ViewChecklist = () => {
     <>
       {loading ? (
         <div className="custom-loader"></div>
-      ) : (
+      ) : cardData ? (
         <div className={styles.viewContainer}>
           <div className={styles.logoContainer}>
             <img src={Logo} alt="Logo" />
@@ -89,6 +89,10 @@ const ViewChecklist = () => {
               </div>
             )}
           </div>
+        </div>
+      ) : (
+        <div className={styles.noCardHolder}>
+          <h1 className={styles.noCard}>No Card Found</h1>
         </div>
       )}
     </>

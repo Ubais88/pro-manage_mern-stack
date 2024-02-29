@@ -9,10 +9,10 @@ import axios from "axios";
 import { useAuth } from "../../store/auth";
 import moment from "moment";
 
-const CreateChecklist = ({ setEditModalOpen }) => {
+const CreateChecklist = ({setEditModalOpen, fetchStats}) => {
 
-  const { authorizationToken, BASE_URL, LogoutUser, cardData } = useAuth();
-  const [ dueDate, setDueDate ] = useState(cardData?.dueDate || null);
+  const { authorizationToken, BASE_URL, LogoutUser, cardData,setCardData } = useAuth();
+  const [dueDate, setDueDate] = useState(cardData?.dueDate || null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [checkList, setCheckList] = useState(cardData?.checkList || []);
   const [priority, setPriority] = useState(cardData?.priority || null);
@@ -98,6 +98,7 @@ const CreateChecklist = ({ setEditModalOpen }) => {
 
         if (response.status === 200 || response.status === 201) {
           setEditModalOpen(false);
+          fetchStats()
         } else {
           const message = response.data.message;
           toast.error(message);
@@ -112,6 +113,11 @@ const CreateChecklist = ({ setEditModalOpen }) => {
       }
     }
   };
+
+  const handleClose = () => {
+    setEditModalOpen(false)
+    setCardData(null)
+  }
 
   const priorityLevels = [
     { color: "#FF2473", label: "HIGH PRIORITY" },
@@ -217,12 +223,12 @@ const CreateChecklist = ({ setEditModalOpen }) => {
           <div className={styles.buttonContainer}>
             <button
               className={styles.cancelButton}
-              onClick={() => setEditModalOpen(false)}
+              onClick={handleClose}
             >
               Cancel
             </button>
             <button className={styles.saveButton} onClick={handleSave}>
-              Save
+              {cardData ? "Update" : "Save" }
             </button>
           </div>
         </div>
