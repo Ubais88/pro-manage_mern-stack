@@ -100,7 +100,7 @@ const Card = (props) => {
     return title.length > maxLength ? title.slice(0, maxLength) + "..." : title;
   };
 
-  const otherSections = ["Backlog", "InProgress", "ToDo", "Done"].filter(
+  const otherSections = ["Backlog","ToDo", "InProgress", "Done"].filter(
     (s) => s !== sectionName
   );
 

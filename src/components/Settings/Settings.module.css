@@ -1,6 +1,7 @@
 
 .mainContainer {
   padding: 2rem;
+  width: 100%;
 }
 
 .settingsHeader {
@@ -35,6 +36,7 @@
 .eyeIcon {
   position: absolute;
   top: 50%;
+  left: 40.2%;
   transform: translateY(-50%);
 }
 

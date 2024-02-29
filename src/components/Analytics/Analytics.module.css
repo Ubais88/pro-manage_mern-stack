@@ -1,5 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .analyticsContainer {
   padding: 2rem;
+  width: 100%;
 }
 
 .analyticsHeader {
@@ -12,7 +19,6 @@
   padding: 2rem;
   display: flex;
   gap: 3rem;
-
 }
 
 .taskList {
@@ -22,16 +28,17 @@
   list-style: disc;
 }
 
-li::marker{
-    color: #90C4CC;
-    font-size: 1.5rem;
-    
+li::marker {
+  color: #90c4cc;
+  font-size: 1.5rem;
+}
+.loader {
+  width: 100%;
 }
 
 .taskItem {
   display: flex;
   align-items: center;
-
   justify-content: space-between;
   width: 20vw;
 }

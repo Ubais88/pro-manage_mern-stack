@@ -53,7 +53,8 @@ const Analytics = () => {
   return (
     <>
       {loading ? (
-        <div className="custom-loader"></div>
+        <div className={styles.loader}><div className="custom-loader"></div></div>
+        
       ) : (
         <div className={styles.analyticsContainer}>
           <div className={styles.analyticsHeader}>Analytics</div>

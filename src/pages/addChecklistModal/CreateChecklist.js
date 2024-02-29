@@ -98,6 +98,7 @@ const CreateChecklist = ({setEditModalOpen, fetchStats}) => {
 
         if (response.status === 200 || response.status === 201) {
           setEditModalOpen(false);
+          setCardData()
           fetchStats()
         } else {
           const message = response.data.message;

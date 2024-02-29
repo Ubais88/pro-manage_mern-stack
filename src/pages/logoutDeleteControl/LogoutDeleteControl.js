@@ -29,6 +29,7 @@ const LogoutDeleteControl = ({ fetchStats, cardId }) => {
 
   const logoutHandler = () => {
     LogoutUser();
+    setLogoutModalOpen(false);
     navigate("/");
   };
 

@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginForm from "../../components/login/LoginForm.js";
 import RegisterForm from "../../components/register/RegisterForm.js";
 import styles from "./Auth.module.css";
 import Logo from "../../assets/Art.png";
+import { useAuth } from "../../store/auth.js";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
+  const { isLoggedIn } = useAuth();
   const [isLoginFormActive, setLoginFormActive] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   return (
     <div className={styles.mainContainer}>

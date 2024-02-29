@@ -39,7 +39,6 @@ const Dashboard = () => {
   }, []);
 
   const fetchStats = async (sortingTime) => {
-    console.log("sorting Time: " + sortingTime);
     try {
       const response = await axios.post(
         `${BASE_URL}/card/getallcards`,
