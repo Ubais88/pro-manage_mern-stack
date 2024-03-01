@@ -66,7 +66,6 @@ const Card = (props) => {
   };
 
   const handleMoveCard = async (targetSection, cardId) => {
-    console.log("targetSection", targetSection, "cardId", cardId);
     try {
       const response = await axios.put(
         `${BASE_URL}/card/movecard/${cardId}`,

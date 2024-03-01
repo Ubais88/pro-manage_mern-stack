@@ -43,7 +43,6 @@ const Settings = () => {
       toast.error("Please enter your new password.");
     } else {
       setLoading(true);
-      console.log("formData: ", formData);
       try {
         const { name, oldPassword, newPassword } = formData;
         const response = await axios.put(
@@ -58,7 +57,6 @@ const Settings = () => {
         if (response.status === 200) {
           // Successful login
           localStorage.setItem("name", response.data.updatedUserDetails.name);
-          console.log("response  :", response);
           setFormData({
             name: response.data.updatedUserDetails.name,
             oldPassword: "",

@@ -31,7 +31,6 @@ const MenuModal = ({ cardId }) => {
         },
       });
 
-      console.log("getCard response: ", response);
 
       if (response.status === 200) {
         setCardData(response.data.card);

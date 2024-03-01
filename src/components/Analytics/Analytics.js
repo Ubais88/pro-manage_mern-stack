@@ -20,8 +20,6 @@ const Analytics = () => {
           },
         });
 
-        // console.log("analysis response: ", response);
-
         if (response.status === 200) {
           setCardAnalysisData(response.data.counts);
         } else {

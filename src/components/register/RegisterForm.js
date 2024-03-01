@@ -45,8 +45,6 @@ const RegisterForm = ({ setLoginFormActive }) => {
       newErrors.password = "Weak password";
     }
     if (formData.password !== formData.confirmPassword) {
-      console.log(formData.password);
-      console.log(formData.confirmPassword);
       newErrors.confirmPassword = "Password not match";
     }
 
@@ -70,7 +68,6 @@ const RegisterForm = ({ setLoginFormActive }) => {
           }
         );
 
-        console.log("signup response:", response);
 
         if (response.status === 200) {
           // Successful login
@@ -86,7 +83,6 @@ const RegisterForm = ({ setLoginFormActive }) => {
           // Failed login
           const res_data = response.data; // Access the response data directly
           toast.error(res_data.message);
-          //console.log("Invalid credential");
         }
         setLoading(false)
       } catch (error) {
