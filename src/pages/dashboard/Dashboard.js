@@ -24,6 +24,7 @@ const Dashboard = () => {
     sortingTime,
     setSortingTime,
   } = useAuth();
+  
   const [cardData, setCardData] = useState();
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState("");
@@ -165,9 +166,8 @@ const Dashboard = () => {
               fetchStats={fetchStats}
             />
           )}
-          {logoutModalOpen && (
+          {logoutModalOpen && actionType == "Delete" && (
             <LogoutDeleteControl
-              actionType={actionType}
               fetchStats={fetchStats}
               cardId={cardId}
             />

@@ -35,16 +35,19 @@ const Settings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!nameModified && !formData.oldPassword && !formData.newPassword) {
+    const { name, oldPassword, newPassword } = formData;
+  
+    if (!nameModified && !oldPassword && !newPassword) {
       toast.error("Enter Data to Update");
-    } else if (!formData.oldPassword && formData.newPassword) {
+    } else if (oldPassword && newPassword && newPassword.length < 5) {
+      toast.error("New password must be at least 5 characters long.");
+    } else if (!oldPassword && newPassword) {
       toast.error("Please enter your old password.");
-    } else if (formData.oldPassword && !formData.newPassword) {
+    } else if (oldPassword && !newPassword) {
       toast.error("Please enter your new password.");
     } else {
       setLoading(true);
       try {
-        const { name, oldPassword, newPassword } = formData;
         const response = await axios.put(
           `${BASE_URL}/auth/update`,
           { name, oldPassword, newPassword },
@@ -55,7 +58,7 @@ const Settings = () => {
           }
         );
         if (response.status === 200) {
-          // Successful login
+          // Successful update
           localStorage.setItem("name", response.data.updatedUserDetails.name);
           setFormData({
             name: response.data.updatedUserDetails.name,
@@ -64,7 +67,7 @@ const Settings = () => {
           });
           toast.success("Update successful");
         } else {
-          // Failed login
+          // Failed update
           const res_data = response.data; // Access the response data directly
           toast.error(res_data.message);
         }
@@ -77,6 +80,7 @@ const Settings = () => {
       }
     }
   };
+  
 
   return (
     <>

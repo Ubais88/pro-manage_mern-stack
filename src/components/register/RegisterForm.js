@@ -8,7 +8,7 @@ import { useAuth } from "../../store/auth";
 import axios from "axios";
 
 const RegisterForm = ({ setLoginFormActive }) => {
-  const { BASE_URL , loading , setLoading } = useAuth();
+  const { BASE_URL, loading, setLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -42,7 +42,7 @@ const RegisterForm = ({ setLoginFormActive }) => {
     }
 
     if (!isPasswordValid) {
-      newErrors.password = "Weak password";
+      newErrors.password = "Password length must be atleast 5";
     }
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Password not match";
@@ -68,7 +68,6 @@ const RegisterForm = ({ setLoginFormActive }) => {
           }
         );
 
-
         if (response.status === 200) {
           // Successful login
           setFormData({
@@ -84,12 +83,12 @@ const RegisterForm = ({ setLoginFormActive }) => {
           const res_data = response.data; // Access the response data directly
           toast.error(res_data.message);
         }
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         // Log any errors
         console.error("Signup error:", error);
         toast.error(error.response.data.message);
-        setLoading(false)
+        setLoading(false);
       }
     }
   };

@@ -14,6 +14,7 @@ const LogoutDeleteControl = ({ fetchStats, cardId }) => {
     actionType,
     BASE_URL,
   } = useAuth();
+
   const navigate = useNavigate();
   if (!isLoggedIn) {
     navigate("/");
