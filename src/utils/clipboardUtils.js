@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 
 const handleCopyClick = (cardId) => {
-  const url = `http://localhost:3000/view/checklist/${cardId}`;
+  const url = `https://pro-manage-frontend-zeta.vercel.app/view/checklist/${cardId}`;
   navigator.clipboard
     .writeText(url)
     .then(() => {

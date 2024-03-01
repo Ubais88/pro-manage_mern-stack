@@ -24,7 +24,7 @@ const Dashboard = () => {
     sortingTime,
     setSortingTime,
   } = useAuth();
-  
+
   const [cardData, setCardData] = useState();
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState("");
@@ -55,9 +55,9 @@ const Dashboard = () => {
       }
       setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error("stats  error:", error);
       if (error.response && error.response.status === 401) {
+        setLoading(false);
         LogoutUser();
         navigate("/");
       }
@@ -117,7 +117,7 @@ const Dashboard = () => {
               <option value="This Month">This Month</option>
             </select>
           </div>
-
+ 
           <div className={styles.cardContainer}>
             <div className={styles.cardScroll}>
               {sections.map((section, index) => (
@@ -167,10 +167,7 @@ const Dashboard = () => {
             />
           )}
           {logoutModalOpen && actionType == "Delete" && (
-            <LogoutDeleteControl
-              fetchStats={fetchStats}
-              cardId={cardId}
-            />
+            <LogoutDeleteControl fetchStats={fetchStats} cardId={cardId} />
           )}
         </>
       )}
